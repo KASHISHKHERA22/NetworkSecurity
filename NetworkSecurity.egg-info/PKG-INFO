@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: NetworkSecurity
+Version: 0.1
+Summary: A project for network security analysis
+Author: Kashish
+Author-email: kashishkhera20@gmail.com
+Requires-Dist: python-dotenv
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: pymongo
+Requires-Dist: certifi
+Dynamic: author
+Dynamic: author-email
+Dynamic: requires-dist
+Dynamic: summary
