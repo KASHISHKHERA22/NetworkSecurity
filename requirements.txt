@@ -11,5 +11,7 @@ pandas
 numpy
 pymongo[srv]>=4.10.1
 certifi
-scikit-learn    
+scikit-learn   
+dill
+pyaml 
 #-e .
