@@ -3,6 +3,7 @@ from networksecurity.entity.artifacts_entity import dataIngestionArtifact, DataV
 from networksecurity.logging.logger import logging
 from networksecurity.exception.exception import NetworkSecurityException
 from networksecurity.constants.training_pipeline import SCHEMA_FILE_PATH
+from networksecurity.utils.main_utils.utils import read_yaml_file
 import os
 import sys
 import pandas as pd
