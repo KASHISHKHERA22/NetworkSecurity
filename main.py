@@ -1,5 +1,6 @@
 from networksecurity.components.data_ingestion import DataIngestion
 from networksecurity.exception.exception import NetworkSecurityException
+from networksecurity.components.data_validation import DataValidationConfig, dataValidation
 from networksecurity.logging.logger import logging
 from networksecurity.entity.config_entity import TrainingPipelineConfig, DataIngestionConfig
 import sys  
@@ -13,6 +14,10 @@ if __name__ == "__main__":
         logging.info("Starting data ingestion process.")
         dataingestionartifact = dataingestion.initaite_data_ingestion()
         print(dataingestionartifact)
+
+        data_validation_config = DataValidationConfig(trainpipelineconfig)
+        data_validation = dataValidation(dataingestionartifact, data_validation_config)
+        data_validation.initiate_data_validation()
     except Exception as e:
         logging.info("An error occurred in the main block.")
         raise NetworkSecurityException(e, sys)
