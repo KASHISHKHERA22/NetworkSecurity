@@ -5,7 +5,8 @@ import dill
 import sys
 import yaml
 import pickle
-
+import numpy as np
+import pandas as pd
 def read_yaml_file(file_path: str) -> dict:
     """
     Reads a YAML file and returns its content as a dictionary. 
@@ -29,3 +30,22 @@ def write_yaml_file(file_path: str, content:object, replace:bool = False) -> Non
 
     except Exception as e:
           raise NetworkSecurityException(e, sys)    
+    
+def save_numpy_array_data(file_path:str,array):
+     try:
+          dir_path = os.path.dirname(file_path)
+          os.makedirs(dir_path,exist_ok=True)
+          with open(file_path,"wb") as file_obj:
+               np.save(file_obj,array)
+          
+     except Exception as e:
+          raise NetworkSecurityException(e, sys)
+     
+def save_object(file_path:str,obj:object)->None:
+     try:
+          dir_path = os.path.dirname(file_path)
+          os.makedirs(dir_path,exist_ok=True)
+          with open(file_path,"wb") as file_obj:
+               pickle.dump(obj,file_obj)
+     except Exception as e:         
+          raise NetworkSecurityException(e, sys)
