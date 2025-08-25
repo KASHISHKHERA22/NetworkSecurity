@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional
-
+from typing import Union
+import numpy as np  
 @dataclass
 class dataIngestionArtifact:
     trained_file_path: str
@@ -23,11 +24,10 @@ class DataTransformationArtifacts:
 
 @dataclass
 class ClassificationMetricArtifact:
-    f1_score:float
-    precision_score:float
-    recall_score:float
-    accuracy_score:float 
-
+    f1_score: Union[float, np.floating]
+    precision_score: Union[float, np.floating]
+    recall_score: Union[float, np.floating]
+    accuracy_score: Union[float, np.floating]
 @dataclass
 class ModelTrainerArtifacts:
     trained_model_file_path:str

@@ -7,6 +7,8 @@ import yaml
 import pickle
 import numpy as np
 import pandas as pd
+from numpy.typing import NDArray
+
 def read_yaml_file(file_path: str) -> dict:
     """
     Reads a YAML file and returns its content as a dictionary. 
@@ -49,3 +51,20 @@ def save_object(file_path:str,obj:object)->None:
                pickle.dump(obj,file_obj)
      except Exception as e:         
           raise NetworkSecurityException(e, sys)
+     
+def load_numpy_array(file_path:str)->np.ndarray:
+     try:
+          with open(file_path,"rb") as file_obj:
+               return np.load(file_obj)
+     except Exception as e:
+          raise NetworkSecurityException(e, sys)
+     
+def load_object(file_path:str)->object:
+     try:
+          with open(file_path,"rb") as file_obj:
+               return pickle.load(file_obj)
+     except Exception as e:
+          raise NetworkSecurityException(e, sys)
+     
+def evaluate_models(X_train,y_train,X_test,y_test,models,params):
+     pass
