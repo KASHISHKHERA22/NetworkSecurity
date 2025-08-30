@@ -18,6 +18,13 @@ from sklearn.ensemble import (
     GradientBoostingClassifier,
     RandomForestClassifier,
 )
+import mlflow.sklearn
+import mlflow
+from mlflow.sklearn import log_model
+from dagshub.logger import dagshub_logger
+from dagshub import logger
+
+dagshub_logger("KASHISHKHERA22/NetworkSecurity")
 
 
 class  ModelTrainer:
@@ -29,6 +36,19 @@ class  ModelTrainer:
             except Exception as e:
                 raise NetworkSecurityException(e, sys)
     
+    def track_mlflow(self,best_model,classificationmetric):
+        with mlflow.start_run():
+            f1_score = classificationmetric.f1_score
+            precision_score = classificationmetric.precision_score
+            recall_score = classificationmetric.recall_score
+            accuracy_score = classificationmetric.accuracy_score
+
+            mlflow.log_metric("F1-Score",f1_score)
+            mlflow.log_metric("Precision-Score",precision_score)
+            mlflow.log_metric("Recall-Score",recall_score)
+            mlflow.log_metric("Accuracy-Score",accuracy_score)
+            log_model(best_model,"model")
+
     def train_model(self,X_train,y_train,X_test,y_test):
         try:
             models = {
@@ -48,12 +68,12 @@ class  ModelTrainer:
                 # 'criterion':['gini', 'entropy', 'log_loss'],
                 
                 # 'max_features':['sqrt','log2',None],
-                'n_estimators': [8,16,32,128,256]
+                'n_estimators': [8,16,32,128]
             },
             "Gradient Boosting":{
                 # 'loss':['log_loss', 'exponential'],
                 'learning_rate':[.1,.01,.05,.001],
-                'subsample':[0.6,0.7,0.75,0.85,0.9],
+                'subsample':[0.6,0.75,0.85,0.9],
                 # 'criterion':['squared_error', 'friedman_mse'],
                 # 'max_features':['auto','sqrt','log2'],
                 'n_estimators': [8,16,32,64,128,256]
@@ -61,7 +81,7 @@ class  ModelTrainer:
             "Logistic Regression":{},
             "AdaBoost":{
                 'learning_rate':[.1,.01,.001],
-                'n_estimators': [8,16,32,64,128,256]
+                'n_estimators': [8,16,32,64,128]
             }
             
         }
@@ -79,8 +99,11 @@ class  ModelTrainer:
             classification_train_metrics = get_classification_score(y_true=y_train,y_pred=y_train_pred)
             classification_test_metrics = get_classification_score(y_true=y_test,y_pred=y_test_pred)
 
+            self.track_mlflow(best_model=best_model,classificationmetric=classification_train_metrics)
+            self.track_mlflow(best_model=best_model,classificationmetric=classification_test_metrics)
+
+
             preprocessor = load_object(file_path=self.data_transformation_artifacts.transformed_object_file_path)
-            model_dir_file_path = self.model_trainer_config.trained_model_file_path
             model_dir_path = os.path.dirname(self.model_trainer_config.trained_model_file_path)
             os.makedirs(model_dir_path,exist_ok=True)
             Network_Model=NetworkModel(preprocessor=preprocessor,model=best_model)
