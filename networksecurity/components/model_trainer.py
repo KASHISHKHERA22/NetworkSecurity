@@ -150,7 +150,10 @@ class  ModelTrainer:
             model_trainer_artifact=ModelTrainerArtifacts(trained_model_file_path=self.model_trainer_config.trained_model_file_path,
                              train_metric_artifact=classification_train_metrics,
                              test_metric_artifact=classification_test_metrics
-                             )
+            
+            )
+            save_object("final_model/model.pkl",best_model)                 
+            
             logging.info(f"Model trainer artifact: {model_trainer_artifact}")   
             return model_trainer_artifact
         except Exception as e:    
