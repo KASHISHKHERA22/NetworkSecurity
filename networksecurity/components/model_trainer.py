@@ -33,16 +33,17 @@ os.environ["MLFLOW_TRACKING_PASSWORD"]="a9576f1b600259e5a912638a90a6050ea6ace6e0
 
 
 class  ModelTrainer:
-    def __init__(self,model_trainer_config:ModelTrainerConfig,data_transformation_artifcats:DataTransformationArtifacts):
+    def __init__(self,model_trainer_config:ModelTrainerConfig,data_transformation_artifact:DataTransformationArtifacts):
             try:
                  
                 self.model_trainer_config = model_trainer_config
-                self.data_transformation_artifacts = data_transformation_artifcats
+                self.data_transformation_artifacts = data_transformation_artifact
             except Exception as e:
                 raise NetworkSecurityException(e, sys)
     
     def track_mlflow(self,best_model,classificationmetric,model_name:str):
         mlflow.set_tracking_uri("https://dagshub.com/KASHISHKHERA22/NetworkSecurity.mlflow")
+        mlflow.set_experiment("default")
         tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
         with mlflow.start_run():
             f1_score = classificationmetric.f1_score
